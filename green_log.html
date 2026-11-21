@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f7f1">
+<title>GREEN LOG - 植物管理</title>
+<style>
+:root{--bg:#f5f7f1;--card:#fff;--ink:#243229;--muted:#788278;--green:#52775b;--line:#e6ebe2;--soft:#edf3eb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif}
+header{padding:calc(env(safe-area-inset-top) + 18px) 18px 14px;position:sticky;top:0;background:#f5f7f1ed;backdrop-filter:blur(12px);z-index:3;border-bottom:1px solid var(--line)}
+.top{display:flex;justify-content:space-between;align-items:center}.brand{font-size:12px;letter-spacing:.18em;color:var(--green);font-weight:800}.sub{font-size:11px;color:var(--muted);margin-top:4px}
+h1{font-size:25px;margin:6px 0 0;letter-spacing:-.04em}.count{font-size:12px;color:var(--muted);background:var(--soft);padding:7px 10px;border-radius:20px}
+main{max-width:760px;margin:auto;padding:16px 14px 100px}.toolbar{display:flex;gap:9px;margin-bottom:14px}.search{flex:1;min-width:0;border:1px solid var(--line);border-radius:13px;padding:12px;background:white;font-size:15px}.btn{border:0;border-radius:13px;padding:12px 15px;background:var(--green);color:white;font-weight:700;font-size:14px}.btn.light{background:var(--soft);color:var(--green)}.filters{display:flex;gap:7px;overflow:auto;padding:0 0 14px}.chip{white-space:nowrap;border:1px solid var(--line);background:white;color:var(--muted);padding:7px 12px;border-radius:20px;font-size:12px}.chip.active{background:var(--green);border-color:var(--green);color:white}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.plant{background:white;border:1px solid var(--line);border-radius:17px;overflow:hidden;min-width:0;cursor:pointer}.plant img{width:100%;aspect-ratio:1.12;object-fit:cover;background:var(--soft);display:block}.placeholder{aspect-ratio:1.12;display:grid;place-items:center;background:var(--soft);color:#9aaa9b;font-size:35px}.pbody{padding:11px}.pname{font-size:15px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ptype{font-size:11px;color:var(--muted);margin-top:3px}.days{font-size:23px;font-weight:800;color:var(--green);margin-top:10px;line-height:1.2}.days small{font-size:11px;font-weight:500;color:var(--muted);margin-left:3px}.last{font-size:10px;color:var(--muted);margin-top:4px}
+.empty{text-align:center;padding:50px 20px;color:var(--muted);background:white;border:1px dashed var(--line);border-radius:18px}.empty b{display:block;color:var(--ink);margin:10px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fffffff0;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 18px calc(env(safe-area-inset-bottom) + 9px);display:flex;justify-content:space-around;z-index:4}.nav button{border:0;background:none;color:var(--muted);font-size:11px;padding:5px 12px}.nav button span{display:block;font-size:20px;margin-bottom:2px}.nav button.active{color:var(--green);font-weight:800}
+.overlay{position:fixed;inset:0;background:#17251dcc;z-index:10;display:none;align-items:flex-end;justify-content:center}.overlay.show{display:flex}.sheet{background:var(--bg);width:100%;max-width:650px;max-height:94dvh;overflow:auto;border-radius:22px 22px 0 0;padding:18px 17px calc(env(safe-area-inset-bottom) + 25px)}.sheethead{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.sheet h2{font-size:20px;margin:0}.close{border:0;background:var(--soft);border-radius:50%;width:34px;height:34px;font-size:20px;color:var(--green)}
+label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin:13px 0 6px}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px;background:white;font:inherit;font-size:15px;color:var(--ink)}textarea{min-height:75px;resize:vertical}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;gap:8px;margin-top:17px}.actions>*{flex:1}.wide{width:100%;margin-top:10px}
+.detailhero{width:100%;max-height:260px;object-fit:cover;border-radius:15px;background:var(--soft)}.detailtitle{font-size:24px;font-weight:800;margin:12px 0 3px}.statrow{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}.stat{background:white;border-radius:13px;padding:12px}.stat small{color:var(--muted);font-size:11px}.stat strong{display:block;font-size:21px;color:var(--green);margin-top:4px}.section{font-size:14px;font-weight:800;margin:20px 0 9px}.info{background:white;border-radius:13px;padding:4px 12px}.info div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}.info div:last-child{border:0}.info span:first-child{color:var(--muted)}.log{background:white;border-radius:12px;padding:11px;margin:7px 0;font-size:13px}.logtop{display:flex;justify-content:space-between;font-weight:750}.log p{margin:5px 0 0;color:var(--muted);font-size:12px}.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.photos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:9px}.muted{color:var(--muted);font-size:12px}.danger{background:#f8e9e6;color:#a14d40}.hidden{display:none!important}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}main{padding-top:22px}}
+</style>
+</head>
+<body>
+<header><div class="top"><div><div class="brand">GREEN LOG</div><h1>My Plants</h1><div class="sub">Your personal plant journal</div></div><div class="count" id="count">0 PLANTS</div></div></header>
+<main id="home">
+ <div class="toolbar"><input class="search" id="search" placeholder="植物を検索..." aria-label="植物を検索"><button class="btn" id="addBtn">＋ 追加</button></div>
+ <div class="filters" id="filters"></div>
+ <div class="grid" id="grid"></div>
+ <div class="empty hidden" id="empty">🌱<b>まだ植物が登録されていません</b><span class="muted">「＋ 追加」から最初の植物を登録しましょう。</span></div>
+</main>
+<main id="records" class="hidden"><h2 style="margin:5px 0 15px">お世話履歴</h2><div id="allLogs"></div></main>
+<main id="settings" class="hidden"><h2 style="margin:5px 0 8px">データ管理</h2><p class="muted">植物情報・写真・お世話履歴は、このiPhoneのブラウザ内に保存されます。Safariの履歴やWebサイトデータを消去すると失われる場合があります。定期的にバックアップしてください。</p><button class="btn wide" id="exportBtn">バックアップを書き出す</button><label class="wide">バックアップを読み込む（JSON）</label><input type="file" id="importFile" accept="application/json"><p class="muted">読み込みは現在のデータに追加します。同じIDの記録は上書きされます。</p></main>
+<nav class="nav"><button class="active" data-tab="home"><span>▦</span>植物一覧</button><button data-tab="records"><span>◷</span>履歴</button><button data-tab="settings"><span>⚙</span>設定</button></nav>
+<div class="overlay" id="modal"><div class="sheet"><div class="sheethead"><h2 id="modalTitle">植物を追加</h2><button class="close" id="closeModal">×</button></div><div id="modalBody"></div></div></div>
+<input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden">
+<script>
+const DB='green-log-db', STORE='items', VERSION=1;
+let db, plants=[], category='すべて', activePlant=null, photoDraft=null;
+const $=id=>document.getElementById(id);
+const today=()=>new Date().toISOString().slice(0,10);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+function openDB(){return new Promise((res,rej)=>{let r=indexedDB.open(DB,VERSION);r.onupgradeneeded=()=>r.result.createObjectStore(STORE,{keyPath:'id'});r.onsuccess=()=>{db=r.result;res()};r.onerror=()=>rej(r.error)})}
+function all(){return new Promise((res,rej)=>{let r=db.transaction(STORE).objectStore(STORE).getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function put(x){return new Promise((res,rej)=>{let r=db.transaction(STORE,'readwrite').objectStore(STORE).put(x);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+function del(id){return new Promise((res,rej)=>{let r=db.transaction(STORE,'readwrite').objectStore(STORE).delete(id);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+function days(date){if(!date)return '—';return Math.max(0,Math.floor((new Date(today()+'T00:00:00')-new Date(date+'T00:00:00'))/86400000))}
+function fmt(d){return d?d.replaceAll('-','/'):'未記録'}
+function latestWater(p){return (p.logs||[]).filter(x=>x.type==='水やり').sort((a,b)=>b.date.localeCompare(a.date))[0]?.date||''}
+function imageURL(blob){return blob?URL.createObjectURL(blob):''}
+function render(){
+ $('count').textContent=plants.length+' PLANTS';
+ let cats=['すべて',...new Set(plants.map(p=>p.category||'その他'))];
+ $('filters').innerHTML=cats.map(c=>`<button class="chip ${c===category?'active':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
+ let q=$('search').value.toLowerCase();
+ let shown=plants.filter(p=>(category==='すべて'||(p.category||'その他')===category)&&(`${p.name} ${p.species||''} ${p.category||''}`).toLowerCase().includes(q));
+ $('grid').innerHTML=shown.map(p=>{let w=latestWater(p);let src=p.cover?imageURL(p.cover):'';return `<article class="plant" data-open="${p.id}">${src?`<img src="${src}">`:`<div class="placeholder">🌿</div>`}<div class="pbody"><div class="pname">${esc(p.name)}</div><div class="ptype">${esc(p.species||p.category||'植物')}</div><div class="days">${w?days(w)+'日':'—'}<small>${w?'前回の水やりから':'水やり未記録'}</small></div><div class="last">${w?'最終水やり '+fmt(w):'記録を追加してください'}</div></div></article>`}).join('');
+ $('empty').classList.toggle('hidden',shown.length>0);
+}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function modal(title,html){$('modalTitle').textContent=title;$('modalBody').innerHTML=html;$('modal').classList.add('show')}
+function close(){ $('modal').classList.remove('show');photoDraft=null }
+function fileBlob(file){return new Promise(res=>{if(!file)return res(null);let img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{let c=document.createElement('canvas'),scale=Math.min(1,1500/Math.max(img.width,img.height));c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);c.getContext('2d').drawImage(img,0,0,c.width,c.height);c.toBlob(b=>{URL.revokeObjectURL(url);res(b||file)},'image/jpeg',.82)};img.onerror=()=>res(file);img.src=url})}
+function plantForm(p={}){
+ photoDraft=p.cover||null;
+ modal(p.id?'植物情報を編集':'植物を追加',`
+ <label>植物の名前 *</label><input id="fName" placeholder="例：P. ridleyi" value="${esc(p.name||'')}">
+ <div class="two"><div><label>カテゴリー</label><select id="fCat">${['ビカクシダ','モンステラ','アガベ','観葉植物','その他'].map(x=>`<option ${p.category===x?'selected':''}>${x}</option>`).join('')}</select></div><div><label>品種・学名</label><input id="fSpecies" placeholder="例：Platycerium ridleyi" value="${esc(p.species||'')}"></div></div>
+ <label>メイン写真</label><input type="file" id="fPhoto" accept="image/*"><div class="muted">写真はこのiPhone内に保存されます。</div>
+ <div class="two"><div><label>購入日</label><input type="date" id="fBuy" value="${p.buyDate||''}"></div><div><label>管理場所</label><input id="fPlace" placeholder="例：室内ラック" value="${esc(p.place||'')}"></div></div>
+ <label>栽培方法・用土・植え付け</label><input id="fMethod" placeholder="例：板付け、水苔3cm" value="${esc(p.method||'')}">
+ <label>育成環境</label><textarea id="fEnv" placeholder="温度・照明・風・湿度など">${esc(p.environment||'')}</textarea>
+ <label>水やり目安（メモ）</label><input id="fWater" placeholder="例：水苔が乾いてきたら" value="${esc(p.waterNote||'')}">
+ <label>その他メモ</label><textarea id="fMemo">${esc(p.memo||'')}</textarea>
+ <div class="actions"><button class="btn light" id="cancelForm">キャンセル</button><button class="btn" id="savePlant">保存する</button></div>`);
+ $('fPhoto').onchange=async e=>{photoDraft=await fileBlob(e.target.files[0])};
+ $('cancelForm').onclick=close;
+ $('savePlant').onclick=async()=>{let name=$('fName').value.trim();if(!name){alert('植物の名前を入力してください');return}
+ let x={...p,id:p.id||uid(),name,category:$('fCat').value,species:$('fSpecies').value.trim(),cover:photoDraft,buyDate:$('fBuy').value,place:$('fPlace').value,method:$('fMethod').value,environment:$('fEnv').value,waterNote:$('fWater').value,memo:$('fMemo').value,logs:p.logs||[],photos:p.photos||[]};await put(x);await refresh();close()};
+}
+function detail(id){
+ let p=plants.find(x=>x.id===id);if(!p)return;activePlant=id;
+ let w=latestWater(p),photos=(p.photos||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
+ let logs=(p.logs||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
+ modal('植物カルテ',`
+ ${p.cover?`<img class="detailhero" src="${imageURL(p.cover)}">`:`<div class="placeholder" style="border-radius:14px">🌿</div>`}
+ <div class="detailtitle">${esc(p.name)}</div><div class="muted">${esc(p.species||p.category||'')}</div>
+ <div class="statrow"><div class="stat"><small>最後の水やり</small><strong>${w?days(w)+'日経過':'未記録'}</strong><small>${fmt(w)}</small></div><div class="stat"><small>成長写真</small><strong>${photos.length}枚</strong><small>写真記録</small></div></div>
+ <div class="actions"><button class="btn" id="waterNow">💧 水やり記録</button><button class="btn light" id="addEvent">＋ お世話記録</button></div>
+ <div class="actions"><button class="btn light" id="addPhoto">📷 成長写真を追加</button><button class="btn light" id="editPlant">編集</button></div>
+ <div class="section">基本情報</div><div class="info">${[['カテゴリー',p.category],['品種・学名',p.species],['購入日',fmt(p.buyDate)],['管理場所',p.place],['栽培方法',p.method],['水やり目安',p.waterNote],['育成環境',p.environment],['メモ',p.memo]].filter(a=>a[1]).map(a=>`<div><span>${a[0]}</span><span style="text-align:right;white-space:pre-wrap">${esc(a[1])}</span></div>`).join('')||'<div>情報はまだありません</div>'}</div>
+ <div class="section">成長アルバム</div><div class="photos">${photos.map(ph=>`<div><img src="${imageURL(ph.blob)}" title="${esc(ph.note||'')}" /><div class="muted">${fmt(ph.date)} ${esc(ph.note||'')}</div></div>`).join('')||'<div class="muted">写真はまだありません</div>'}</div>
+ <div class="section">お世話履歴</div>${logs.map(l=>`<div class="log"><div class="logtop"><span>${esc(l.type)}</span><span>${fmt(l.date)}</span></div>${l.note?`<p>${esc(l.note)}</p>`:''}</div>`).join('')||'<div class="muted">履歴はまだありません</div>'}
+ <button class="btn danger wide" id="deletePlant">この植物を削除</button>`);
+ $('waterNow').onclick=()=>addLog(id,'水やり');
+ $('addEvent').onclick=()=>eventForm(id);
+ $('addPhoto').onclick=()=>photoForm(id);
+ $('editPlant').onclick=()=>plantForm(p);
+ $('deletePlant').onclick=async()=>{if(confirm(`「${p.name}」を削除しますか？写真・履歴も削除されます。`)){await del(id);await refresh();close()}};
+}
+function addLog(id,type){let p=plants.find(x=>x.id===id);if(!p)return;let log={id:uid(),type,date:today(),note:''};p.logs=[...(p.logs||[]),log];put(p).then(async()=>{await refresh();detail(id)})}
+function eventForm(id){
+ modal('お世話を記録',`<label>内容</label><select id="eType">${['水やり','葉水','肥料','植え替え','剪定','新芽確認','胞子葉展開','貯水葉展開','病害虫チェック','その他'].map(x=>`<option>${x}</option>`).join('')}</select><label>日付</label><input type="date" id="eDate" value="${today()}"><label>メモ</label><textarea id="eNote" placeholder="気づいたこと・作業内容など"></textarea><div class="actions"><button class="btn light" id="eCancel">戻る</button><button class="btn" id="eSave">記録する</button></div>`);
+ $('eCancel').onclick=()=>detail(id);
+ $('eSave').onclick=async()=>{let p=plants.find(x=>x.id===id);p.logs=[...(p.logs||[]),{id:uid(),type:$('eType').value,date:$('eDate').value,note:$('eNote').value}];await put(p);await refresh();detail(id)};
+}
+function photoForm(id){
+ modal('成長写真を追加',`<label>写真 *</label><input type="file" id="phFile" accept="image/*" capture="environment"><label>撮影日</label><input type="date" id="phDate" value="${today()}"><label>成長メモ</label><input id="phNote" placeholder="例：新しい胞子葉が伸び始めた"><div class="actions"><button class="btn light" id="phCancel">戻る</button><button class="btn" id="phSave">保存する</button></div>`);
+ $('phCancel').onclick=()=>detail(id);
+ $('phSave').onclick=async()=>{let f=$('phFile').files[0];if(!f){alert('写真を選択してください');return}let blob=await fileBlob(f),p=plants.find(x=>x.id===id);p.photos=[...(p.photos||[]),{id:uid(),date:$('phDate').value,note:$('phNote').value,blob}];await put(p);await refresh();detail(id)};
+}
+async function refresh(){plants=await all();plants.sort((a,b)=>a.name.localeCompare(b.name,'ja'));render();renderLogs()}
+function renderLogs(){let arr=[];plants.forEach(p=>(p.logs||[]).forEach(l=>arr.push({...l,plant:p.name})));arr.sort((a,b)=>b.date.localeCompare(a.date));$('allLogs').innerHTML=arr.map(l=>`<div class="log"><div class="logtop"><span>${esc(l.plant)}　/　${esc(l.type)}</span><span>${fmt(l.date)}</span></div>${l.note?`<p>${esc(l.note)}</p>`:''}</div>`).join('')||'<div class="empty">お世話の記録はまだありません。</div>'}
+$('addBtn').onclick=()=>plantForm();$('closeModal').onclick=close;$('modal').onclick=e=>{if(e.target===$('modal'))close()};$('search').oninput=render;
+$('filters').onclick=e=>{let b=e.target.closest('[data-cat]');if(b){category=b.dataset.cat;render()}};
+$('grid').onclick=e=>{let c=e.target.closest('[data-open]');if(c)detail(c.dataset.open)};
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));['home','records','settings'].forEach(id=>$(id).classList.toggle('hidden',id!==b.dataset.tab))});
+$('exportBtn').onclick=async()=>{let data=await all();let out=[];for(let p of data){out.push({...p,cover:p.cover?await blobData(p.cover):null,photos:await Promise.all((p.photos||[]).map(async ph=>({...ph,blob:await blobData(ph.blob)})))})}let blob=new Blob([JSON.stringify({app:'GREEN LOG',version:1,plants:out})],{type:'application/json'});download(blob,'green-log-backup-'+today()+'.json')};
+function blobData(blob){return new Promise(res=>{if(!blob)return res(null);let r=new FileReader();r.onload=()=>res(r.result);r.readAsDataURL(blob)})}
+function dataBlob(s){return s?fetch(s).then(r=>r.blob()):Promise.resolve(null)}
+function download(blob,name){let a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),2000)}
+$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let data=JSON.parse(await f.text());if(!Array.isArray(data.plants))throw Error('形式が違います');for(let p of data.plants){p.cover=await dataBlob(p.cover);p.photos=await Promise.all((p.photos||[]).map(async ph=>({...ph,blob:await dataBlob(ph.blob)})));await put(p)}await refresh();alert('バックアップを読み込みました')}catch(err){alert('読み込みに失敗しました。バックアップファイルを確認してください。')}e.target.value=''};
+(async()=>{try{await openDB();await refresh()}catch(e){alert('このブラウザではローカル保存を利用できません。Safariで開いてください。')}})();
+</script>
+</body></html>
